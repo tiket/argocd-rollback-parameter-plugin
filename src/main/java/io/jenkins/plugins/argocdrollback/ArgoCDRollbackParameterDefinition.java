@@ -8,6 +8,7 @@ import hudson.model.Item;
 import hudson.model.ParameterDefinition;
 import hudson.model.ParameterValue;
 import hudson.model.SimpleParameterDefinition;
+import hudson.model.ParameterDefinition.ParameterDescriptor;
 import hudson.security.ACL;
 import hudson.util.ListBoxModel;
 import io.jenkins.plugins.argocdrollback.model.Ordering;
@@ -17,8 +18,10 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.*;
+import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
-import javax.annotation.Nonnull;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -54,7 +57,7 @@ public class ArgoCDRollbackParameterDefinition extends SimpleParameterDefinition
         return argoCDBaseURL;
     }
 
-    public String getCredentialId() { 
+    public String getCredentialId() {
         return credentialId;
     }
 
@@ -85,7 +88,7 @@ public class ArgoCDRollbackParameterDefinition extends SimpleParameterDefinition
             return "";
         }
     }
-    
+
     public List<String> getRollbackVersions() {
         String token = "";
 
@@ -120,9 +123,9 @@ public class ArgoCDRollbackParameterDefinition extends SimpleParameterDefinition
                     }
                 }
             }
-            logger.warning("Cannot find credential for :" + credentialId + ":");
+            logger.warning("argocd-rollback-parameter: Cannot find credential for :" + credentialId + ":");
         } else {
-            logger.info("CredentialId is empty");
+            logger.info("argocd-rollback-parameter: CredentialId is empty");
         }
         return null;
     }
@@ -151,7 +154,7 @@ public class ArgoCDRollbackParameterDefinition extends SimpleParameterDefinition
     public static class DescriptorImpl extends ParameterDescriptor {
 
         @Override
-        @Nonnull
+        @NonNull
         public String getDisplayName() {
             return "ArgoCD Rollback Parameter";
         }
@@ -176,7 +179,7 @@ public class ArgoCDRollbackParameterDefinition extends SimpleParameterDefinition
                                                     @QueryParameter String credentialId) {
             if (context == null && !Jenkins.get().hasPermission(Jenkins.ADMINISTER) ||
                 context != null && !context.hasPermission(Item.EXTENDED_READ)) {
-                logger.info("No permission to list credential");
+                logger.info("argocd-rollback-parameter: No permission to list credential");
                 return new StandardListBoxModel().includeCurrentValue(credentialId);
             }
             return new StandardListBoxModel()

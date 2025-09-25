@@ -13,7 +13,7 @@ import org.kohsuke.stapler.export.Exported;
 import java.util.Locale;
 
 /**
- * {@link ParameterValue} created from {@link ImageTagParameterDefinition}.
+ * {@link ParameterValue} created from {@link ArgoCDRollbackParameterDefinition}.
  */
 public class ArgoCDRollbackParameterValue extends ParameterValue {
     @Exported(visibility = 4)
@@ -77,7 +77,7 @@ public class ArgoCDRollbackParameterValue extends ParameterValue {
 
         ArgoCDRollbackParameterValue that = (ArgoCDRollbackParameterValue) o;
 
-        return value.equals(that.value);
+        return value != null ? value.equals(that.value) : that.value == null;
     }
 
     @Override
@@ -90,7 +90,7 @@ public class ArgoCDRollbackParameterValue extends ParameterValue {
 
     @Override
     public String toString() {
-        return "(ImageTagParameterValue) " + getName() + "='" + value + "'";
+        return "(ArgoCDRollbackParameterValue) " + getName() + "='" + value + "'";
     }
 
     @Override
