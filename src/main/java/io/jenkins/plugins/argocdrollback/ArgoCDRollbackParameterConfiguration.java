@@ -48,17 +48,17 @@ public class ArgoCDRollbackParameterConfiguration extends GlobalConfiguration {
 
     @Override
     public boolean configure(StaplerRequest req, JSONObject json) {
-        if (json.has("defaultRegistry")) {
+        if (json.has("defaultArgoCDBaseURL")) {
             this.defaultArgoCDBaseURL = json.getString("defaultArgoCDBaseURL");
-            logger.fine("Changed default ArgoCD Base URL to: " + defaultArgoCDBaseURL);
+            logger.fine("argocd-rollback-parameter: Changed default ArgoCD Base URL to: " + defaultArgoCDBaseURL);
         }
         if (json.has("defaultCredentialId")) {
-            this.defaultArgoCDBaseURL = json.getString("defaultCredentialId");
-            logger.fine("Changed default credentialsId to: " + defaultCredentialId);
+            this.defaultCredentialId = json.getString("defaultCredentialId");
+            logger.fine("argocd-rollback-parameter: Changed default credentialsId to: " + defaultCredentialId);
         }
-        if (json.has("defaultTagOrdering")) {
+        if (json.has("defaultOrdering")) {
             this.defaultOrdering = Ordering.valueOf(json.getString("defaultOrdering"));
-            logger.fine("Changed default ordering to: " + defaultOrdering);
+            logger.fine("argocd-rollback-parameter: Changed default ordering to: " + defaultOrdering);
         }
         save();
         return true;
@@ -67,7 +67,7 @@ public class ArgoCDRollbackParameterConfiguration extends GlobalConfiguration {
     @DataBoundSetter
     @SuppressWarnings("unused")
     public void setDefaultRegistry(String defaultRegistry) {
-        logger.info("Changing default ArgoCD Base URL to: " + defaultRegistry);
+        logger.info("argocd-rollback-parameter: Changing default ArgoCD Base URL to: " + defaultRegistry);
         this.defaultArgoCDBaseURL = defaultRegistry;
         save();
     }
@@ -75,7 +75,7 @@ public class ArgoCDRollbackParameterConfiguration extends GlobalConfiguration {
     @DataBoundSetter
     @SuppressWarnings("unused")
     public void setDefaultCredentialId(String defaultCredentialId) {
-        logger.info("Changing default credentialsId to: " + defaultCredentialId);
+        logger.info("argocd-rollback-parameter: Changing default credentialsId to: " + defaultCredentialId);
         this.defaultCredentialId = defaultCredentialId;
         save();
     }
@@ -83,7 +83,7 @@ public class ArgoCDRollbackParameterConfiguration extends GlobalConfiguration {
     @DataBoundSetter
     @SuppressWarnings("unused")
     public void setDefaultTagOrdering(Ordering defaultTagOrdering) {
-        logger.info("Changing default ordering to: " + defaultTagOrdering);
+        logger.info("argocd-rollback-parameter: Changing default ordering to: " + defaultTagOrdering);
         this.defaultOrdering = defaultTagOrdering;
         save();
     }
@@ -91,7 +91,7 @@ public class ArgoCDRollbackParameterConfiguration extends GlobalConfiguration {
     @SuppressWarnings("unused")
     public ListBoxModel doFillDefaultCredentialIdItems(@QueryParameter String credentialsId) {
         if (!Jenkins.get().hasPermission(Jenkins.ADMINISTER)) {
-            logger.info("No permission to list credential");
+            logger.info("argocd-rollback-parameter: No permission to list credential");
             return new StandardListBoxModel().includeCurrentValue(defaultCredentialId);
         }
         return new StandardListBoxModel()

@@ -9,19 +9,38 @@
             <input type="hidden" name="description" value="${it.description}" />
             <input type="hidden" name="appName" value="${it.appName}" />
 
-            <select name="rollbackVersion" style="min-width:18rem;">
-                <j:forEach var="rollbackVersion" items="${it.rollbackVersions}" varStatus="loop">
-                    <j:choose>
-                        <f:option value="${rollbackVersion}" selected="${rollbackVersion.equals(it.defaultRollbackVersion)}">
-                            ${rollbackVersion}
-                        </f:option>
-                    </j:choose>
-                </j:forEach>
-            </select>
+            <j:choose>
+                <j:when test="${it.errorMsg != null and it.errorMsg != ''}">
+                    <!-- Show error message with styling -->
+                    <div style="padding: 8px 12px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24; margin-bottom: 8px;">
+                        <strong>⚠️ ArgoCD Connection Error:</strong><br/>
+                        ${it.errorMsg}
+                    </div>
+                    <!-- Show disabled dropdown with error state -->
+                    <select name="rollbackVersion" style="min-width:18rem; background-color: #f5f5f5;" disabled="true">
+                        <option value="">Unable to load rollback versions</option>
+                    </select>
+                </j:when>
+                <j:when test="${empty(it.rollbackVersions)}">
+                    <select name="rollbackVersion" style="min-width:18rem; background-color: #f5f5f5;" disabled="true">
+                        <option value="">No versions available</option>
+                    </select>
+                    <!-- Show loading or no data state -->
+                    <div style="padding: 8px 12px; background-color: #d1ecf1; border: 1px solid #b8daff; border-radius: 4px; color: #0c5460; margin-top: 8px;">
+                        <strong>ℹ️ Info:</strong> No rollback versions available for <strong>${it.appName}</strong>
+                    </div>
+                </j:when>
+                <j:otherwise>
+                    <select name="rollbackVersion" style="min-width:24rem; font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: 13px;">
+                        <j:forEach var="rollbackVersion" items="${it.rollbackVersions}" varStatus="loop">
+                            <f:option value="${rollbackVersion}" selected="${rollbackVersion.equals(it.defaultRollbackVersion)}">
+                                ${rollbackVersion}
+                            </f:option>
+                        </j:forEach>
+                    </select>
+                </j:otherwise>
+            </j:choose>
 
-        </div>
-        <div name="errorMsg" display="${it.errorMsg == '' ? 'none' : ''}" style="color: red">
-            ${it.errorMsg}
         </div>
     </f:entry>
 
