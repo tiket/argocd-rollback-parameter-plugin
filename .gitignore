@@ -9,3 +9,20 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
+
+# mvn hpi:run
+work
+
+# IntelliJ IDEA project files
+*.iml
+*.iws
+*.ipr
+.idea
+
+# Eclipse project files
+.settings
+.classpath
+.project
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
